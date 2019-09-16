@@ -1,31 +1,25 @@
 package com.vincentmet.smm.guis;
 
+import com.vincentmet.smm.Config;
 import com.vincentmet.smm.lib.EnumButtonTexture;
 import com.vincentmet.smm.lib.Ref;
 import com.vincentmet.smm.lib.Utils;
 import com.vincentmet.smm.lib.gui.GuiLocation;
-import com.vincentmet.smm.lib.handlers.ConfigHandler;
-import net.minecraft.client.audio.PositionedSoundRecord;
-import net.minecraft.client.gui.*;
-import net.minecraft.client.renderer.GlStateManager;
-import net.minecraft.init.SoundEvents;
+import net.minecraft.client.gui.screen.*;
 import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.fml.client.GuiModList;
+import net.minecraft.util.text.TranslationTextComponent;
+import net.minecraftforge.fml.client.gui.GuiModList;
 import org.lwjgl.opengl.GL11;
 
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-
-public class GuiNewMainMenu extends GuiScreen{
+public class GuiNewMainMenu extends Screen {
 	private static final ResourceLocation background = new ResourceLocation(Ref.MODID, "textures/gui/background.png");
 	private static final ResourceLocation logo = new ResourceLocation(Ref.MODID, "textures/gui/logo.png");
-	private static final int textureSizeX = ConfigHandler.background_width;
-	private static final int textureSizeY = ConfigHandler.background_height;
+	private static final int textureSizeX = Config.backgroundWidth.get();
+	private static final int textureSizeY = Config.backgroundHeight.get();
 	private static final int maxLogoWidth = 200;
 	private static final int maxLogoHeight = 150;
-	private static final int logoTextureWidth = ConfigHandler.logo_width;
-	private static final int logoTextureHeight = ConfigHandler.logo_height;
+	private static final int logoTextureWidth = Config.logoWidth.get();
+	private static final int logoTextureHeight = Config.logoHeight.get();
 	public int currentButton = 0;
 	
 	public GuiLocation left;
@@ -33,29 +27,38 @@ public class GuiNewMainMenu extends GuiScreen{
 	public GuiLocation center;
 	public GuiLocation centerright;
 	public GuiLocation right;
-	
+
+	public GuiNewMainMenu() {
+		super(new TranslationTextComponent(""));
+	}
+
 	@Override
-	public void drawScreen(int mouseX, int mouseY, float partialTicks){
-		GlStateManager.pushMatrix();
+	public void tick() {
+	}
+
+	@Override
+	public void render(int mouseX, int mouseY, float partialTicks){
+		GL11.glPushMatrix();
 		float x = (float)width/textureSizeX;
 		float y = (float)height/textureSizeY;
-		GlStateManager.scale(x, y, 1.0);
-		this.mc.renderEngine.bindTexture(background);
-		drawModalRectWithCustomSizedTexture(0, 0, 0, 0, textureSizeX, textureSizeY, textureSizeX, textureSizeY);
-		GlStateManager.popMatrix();
+		GL11.glScaled(x, y, 1.0);
+		this.getMinecraft().getTextureManager().bindTexture(background);
+		blit(0, 0, 0, 0, textureSizeX, textureSizeY, textureSizeX, textureSizeY);
+		GL11.glPopMatrix();
 		
-		if(ConfigHandler.is_logo_enabled){
-			GlStateManager.pushMatrix();
+		if(Config.isLogoEnabled.get()){
+			GL11.glPushMatrix();
 			GL11.glEnable(GL11.GL_BLEND);
-			this.mc.renderEngine.bindTexture(logo);
-			drawModalRectWithCustomSizedTexture((width>>1)-(maxLogoWidth>>1), (height>>4), 0, 0, logoTextureWidth, logoTextureHeight, logoTextureWidth, logoTextureHeight);
+			GL11.glEnable(GL11.GL_ALPHA_TEST);
+			this.getMinecraft().getTextureManager().bindTexture(logo);
+			blit((width>>1)-(maxLogoWidth>>1), (height>>4), 0, 0, logoTextureWidth, logoTextureHeight, logoTextureWidth, logoTextureHeight);
 			GL11.glDisable(GL11.GL_BLEND);
-			GlStateManager.popMatrix();
+			GL11.glDisable(GL11.GL_ALPHA_TEST);
+			GL11.glPopMatrix();
 		}
-		
-		List<GuiButton> buttons = new ArrayList<>();
+
 		int buttonSize = 32;
-		switch(ConfigHandler.button_size){
+		switch(Config.buttonSize.get()){
 			case 0:
 				buttonSize = 32;
 				break;
@@ -124,9 +127,9 @@ public class GuiNewMainMenu extends GuiScreen{
 	}
 	
 	@Override
-	public void mouseClicked(int mouseX, int mouseY, int mouseButton) throws IOException{
+	public boolean mouseClicked(double mouseX, double mouseY, int mouseButton){
 		int buttonSize = 32;
-		switch(ConfigHandler.button_size){
+		switch(Config.buttonSize.get()){
 			case 0:
 				buttonSize = 32;
 				break;
@@ -141,14 +144,14 @@ public class GuiNewMainMenu extends GuiScreen{
 		int buttonX = center.x;
 		int buttonY = center.y;
 		if((buttonX + buttonSize) > mouseX && mouseX > buttonX && (buttonY + buttonSize) > mouseY && mouseY > buttonY){
-			this.mc.getSoundHandler().playSound(PositionedSoundRecord.getMasterRecord(SoundEvents.UI_BUTTON_CLICK, 1.0F));
+			//this.getMinecraft().getSoundHandler().play((ISound) SoundEvents.UI_BUTTON_CLICK);
 			switch(this.currentButton){
-				case 0: this.mc.displayGuiScreen(new GuiWorldSelection(this)); break; // Singleplayer
-				case 1: this.mc.displayGuiScreen(new GuiMultiplayer(this)); break; // Multiplayer
-				case 2: this.mc.displayGuiScreen(new GuiModList(this)); break; // Mods
-				case 3: this.mc.displayGuiScreen(new GuiOptions(this, this.mc.gameSettings)); break; // Settings
-				case 4: this.mc.displayGuiScreen(new GuiLanguage(this, this.mc.gameSettings, this.mc.getLanguageManager())); break; // Language
-				case 5: this.mc.shutdown(); break; // Exit
+				case 0: this.getMinecraft().displayGuiScreen(new WorldSelectionScreen(this)); break; // Singleplayer
+				case 1: this.getMinecraft().displayGuiScreen(new MultiplayerScreen(this)); break; // Multiplayer
+				case 2: this.getMinecraft().displayGuiScreen(new GuiModList(this)); break; // Mods
+				case 3: this.getMinecraft().displayGuiScreen(new OptionsScreen(this, this.getMinecraft().gameSettings)); break; // Settings
+				case 4: this.getMinecraft().displayGuiScreen(new LanguageScreen(this, this.getMinecraft().gameSettings, this.getMinecraft().getLanguageManager())); break; // Language
+				case 5: this.getMinecraft().shutdown(); break; // Exit
 			}
 		}
 		
@@ -156,7 +159,7 @@ public class GuiNewMainMenu extends GuiScreen{
 		buttonX = left.x;
 		buttonY = left.y;
 		if((buttonX + buttonSize) > mouseX && mouseX > buttonX && (buttonY + buttonSize) > mouseY && mouseY > buttonY){
-			this.mc.getSoundHandler().playSound(PositionedSoundRecord.getMasterRecord(SoundEvents.UI_BUTTON_CLICK, 1.0F));
+			//this.getMinecraft().getSoundHandler().play((ISound) SoundEvents.UI_BUTTON_CLICK);
 			if(currentButton >= 2){
 				currentButton -= 2;
 			}else{
@@ -168,7 +171,7 @@ public class GuiNewMainMenu extends GuiScreen{
 		buttonX = leftcenter.x;
 		buttonY = leftcenter.y;
 		if((buttonX + buttonSize) > mouseX && mouseX > buttonX && (buttonY + buttonSize) > mouseY && mouseY > buttonY){
-			this.mc.getSoundHandler().playSound(PositionedSoundRecord.getMasterRecord(SoundEvents.UI_BUTTON_CLICK, 1.0F));
+			//this.getMinecraft().getSoundHandler().play((ISound) SoundEvents.UI_BUTTON_CLICK);
 			if(currentButton >= 1){
 				currentButton -= 1;
 			}else{
@@ -179,7 +182,7 @@ public class GuiNewMainMenu extends GuiScreen{
 		buttonX = centerright.x;
 		buttonY = centerright.y;
 		if((buttonX + buttonSize) > mouseX && mouseX > buttonX && (buttonY + buttonSize) > mouseY && mouseY > buttonY){
-			this.mc.getSoundHandler().playSound(PositionedSoundRecord.getMasterRecord(SoundEvents.UI_BUTTON_CLICK, 1.0F));
+			//this.getMinecraft().getSoundHandler().play((ISound)SoundEvents.UI_BUTTON_CLICK);
 			if(currentButton <= 4){
 				currentButton += 1;
 			}else{
@@ -190,7 +193,7 @@ public class GuiNewMainMenu extends GuiScreen{
 		buttonX = right.x;
 		buttonY = right.y;
 		if((buttonX + buttonSize) > mouseX && mouseX > buttonX && (buttonY + buttonSize) > mouseY && mouseY > buttonY){
-			this.mc.getSoundHandler().playSound(PositionedSoundRecord.getMasterRecord(SoundEvents.UI_BUTTON_CLICK, 1.0F));
+			//this.getMinecraft().getSoundHandler().play((ISound) SoundEvents.UI_BUTTON_CLICK);
 			if(currentButton <= 3){
 				currentButton += 2;
 			}else{
@@ -198,6 +201,6 @@ public class GuiNewMainMenu extends GuiScreen{
 			}
 		}
 		
-		super.mouseClicked(mouseX, mouseY, mouseButton);
+		return super.mouseClicked(mouseX, mouseY, mouseButton);
 	}
 }

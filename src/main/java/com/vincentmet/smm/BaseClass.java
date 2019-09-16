@@ -1,33 +1,40 @@
 package com.vincentmet.smm;
 
 import com.vincentmet.smm.lib.Ref;
+import com.vincentmet.smm.lib.handlers.EventHandler;
 import com.vincentmet.smm.network.proxy.ClientProxy;
+import com.vincentmet.smm.network.proxy.IProxy;
+import com.vincentmet.smm.network.proxy.ServerProxy;
+import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.fml.DistExecutor;
+import net.minecraftforge.fml.ModLoadingContext;
 import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.fml.common.SidedProxy;
-import net.minecraftforge.fml.common.event.FMLInitializationEvent;
-import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
-import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
+import net.minecraftforge.fml.config.ModConfig;
+import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
+import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
+import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
+import net.minecraftforge.fml.loading.FMLPaths;
 
-@Mod(modid = Ref.MODID, name = Ref.NAME, version = Ref.VERSION, clientSideOnly = true, dependencies = "before-required-client:resourceloader@[1.5.3,);")
+@Mod(Ref.MODID)
 public class BaseClass{
-    @SidedProxy(clientSide = Ref.PROXY_CLIENT)
-    public static ClientProxy proxy;
-    
-    @Mod.Instance(Ref.MODID)
-    public static BaseClass instance;
-    
-    @Mod.EventHandler
-    public void preinit(FMLPreInitializationEvent e){
-        proxy.preInit(e);
+    public static IProxy proxy = DistExecutor.runForDist(() -> () -> new ClientProxy(), () -> () -> new ServerProxy());
+    public static BaseClass INSTANCE;
+
+    public BaseClass(){
+        INSTANCE = this;
+        ModLoadingContext.get().registerConfig(ModConfig.Type.CLIENT, Config.CLIENT_CONFIG);
+        FMLJavaModLoadingContext.get().getModEventBus().addListener(this::setup);
+        FMLJavaModLoadingContext.get().getModEventBus().addListener(this::loadComplete);
+        Config.loadConfig(Config.CLIENT_CONFIG, FMLPaths.CONFIGDIR.get().resolve("smm-client.toml"));
+        MinecraftForge.EVENT_BUS.register(this);
+        MinecraftForge.EVENT_BUS.register(EventHandler.class);
+
     }
-    
-    @Mod.EventHandler
-    public void init(FMLInitializationEvent e){
-        proxy.init(e);
+
+    private void setup(final FMLCommonSetupEvent event){
+        proxy.init();
     }
-    
-    @Mod.EventHandler
-    public void postinit(FMLPostInitializationEvent e){
-        proxy.postInit(e);
+
+    private void loadComplete(final FMLClientSetupEvent event){
     }
 }
