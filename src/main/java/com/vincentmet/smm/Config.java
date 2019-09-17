@@ -12,7 +12,6 @@ public class Config {
     public static final ForgeConfigSpec.Builder CLIENT_BUILDER = new ForgeConfigSpec.Builder();
     public static ForgeConfigSpec CLIENT_CONFIG;
 
-    public static final String CATEGORY_GENERAL = "General";
     public static ForgeConfigSpec.BooleanValue isLogoEnabled;
     public static ForgeConfigSpec.IntValue buttonSize;
     public static ForgeConfigSpec.IntValue backgroundWidth;

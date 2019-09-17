@@ -36,5 +36,6 @@ public class BaseClass{
     }
 
     private void loadComplete(final FMLClientSetupEvent event){
+
     }
 }
