@@ -19,12 +19,10 @@ archivesBaseName = 'smm'
 sourceCompatibility = targetCompatibility = compileJava.sourceCompatibility = compileJava.targetCompatibility = '1.8' // Need this here so eclipse task generates correctly.
 
 minecraft {
-    mappings channel: 'snapshot', version: '20191031-1.14.3'
+    mappings channel: 'snapshot', version: '20191205-1.14.3'
     runs {
         client {
             workingDirectory project.file('run')
-            property 'forge.logging.markers', 'SCAN,REGISTRIES,REGISTRYDUMP'
-            property 'forge.logging.console.level', 'debug'
             mods {
                 smm {
                     source sourceSets.main
@@ -33,8 +31,6 @@ minecraft {
         }
         server {
             workingDirectory project.file('run')
-            property 'forge.logging.markers', 'SCAN,REGISTRIES,REGISTRYDUMP'
-            property 'forge.logging.console.level', 'debug'
             mods {
                 smm {
                     source sourceSets.main
@@ -43,8 +39,6 @@ minecraft {
         }
         data {
             workingDirectory project.file('run')
-            property 'forge.logging.markers', 'SCAN,REGISTRIES,REGISTRYDUMP'
-            property 'forge.logging.console.level', 'debug'
             args '--mod', 'examplemod', '--all', '--output', file('src/generated/resources/')
             mods {
                 smm {
@@ -55,7 +49,7 @@ minecraft {
     }
 }
 dependencies {
-    minecraft 'net.minecraftforge:forge:1.14.4-28.1.79'
+    minecraft 'net.minecraftforge:forge:1.14.4-28.1.104'
 }
 
 jar {
