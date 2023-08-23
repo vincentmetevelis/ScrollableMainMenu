@@ -3,6 +3,7 @@
 build/
 run/
 out/
+logs/
 *.iml
 *.ipr
 *.iws

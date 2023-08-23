@@ -1,12 +1,10 @@
 package com.vincentmet.smm.guis;
 
-import com.mojang.blaze3d.platform.GlStateManager;
 import com.vincentmet.smm.Config;
 import com.vincentmet.smm.lib.Ref;
 import com.vincentmet.smm.lib.Utils;
 import com.vincentmet.smm.lib.gui.GuiLocation;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.audio.ISound;
 import net.minecraft.client.audio.SimpleSound;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.util.ResourceLocation;

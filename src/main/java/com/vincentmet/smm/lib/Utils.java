@@ -8,7 +8,7 @@ import net.minecraft.client.gui.AbstractGui;
 import net.minecraft.client.gui.screen.*;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.Util;
-import net.minecraftforge.fml.client.gui.GuiModList;
+import net.minecraftforge.fml.client.gui.screen.ModListScreen;
 import org.lwjgl.opengl.GL11;
 
 public class Utils{
@@ -77,7 +77,7 @@ public class Utils{
 			if(value.equals("quitgame")) Minecraft.getInstance().shutdown();
 		}
 		if(type.equals(new ResourceLocation(Ref.MODID, "forge"))){
-			if(value.equals("modlist")) Minecraft.getInstance().displayGuiScreen(new GuiModList(prevScreen));
+			if(value.equals("modlist")) Minecraft.getInstance().displayGuiScreen(new ModListScreen(prevScreen));
 		}
 		if(type.equals(new ResourceLocation(Ref.MODID, "url"))){
 			Minecraft.getInstance().displayGuiScreen(new ConfirmOpenLinkScreen((bool) -> {
