@@ -1,5 +1,6 @@
 package com.vincentmet.smm.guis;
 
+import com.mojang.blaze3d.matrix.MatrixStack;
 import com.vincentmet.smm.Config;
 import com.vincentmet.smm.lib.Ref;
 import com.vincentmet.smm.lib.Utils;
@@ -30,9 +31,9 @@ public class GuiNewMainMenu extends Screen {
 	}
 
 	@Override
-	public void render(int mouseX, int mouseY, float partialTicks){
-		GL11.glPushMatrix();
-		this.getMinecraft().getTextureManager().bindTexture(background);
+	public void render(MatrixStack stack, int mouseX, int mouseY, float partialTicks){
+		stack.pushPose();
+		this.getMinecraft().getTextureManager().bind(background);
 		int[] bgBufW = new int[1];
 		int[] bgBufH = new int[1];
 		glGetTexLevelParameteriv(GL_TEXTURE_2D, 0, GL_TEXTURE_WIDTH, bgBufW);
@@ -41,25 +42,25 @@ public class GuiNewMainMenu extends Screen {
 		int bgHeight = bgBufH[0];
 		float x = (float)width/bgWidth;
 		float y = (float)height/bgHeight;
-		GL11.glScaled(x, y, 1.0);
-		blit(0, 0, 0, 0, bgWidth, bgHeight, bgWidth, bgHeight);
-		GL11.glPopMatrix();
+		stack.scale(x, y, 1.0f);
+		blit(stack, 0, 0, 0, 0, bgWidth, bgHeight, bgWidth, bgHeight);
+		stack.popPose();
 		
 		if(Config.ConfigValues.IS_LOGO_ENABLED){
-			GL11.glPushMatrix();
+			stack.pushPose();
 			GL11.glEnable(GL11.GL_BLEND);
 			GL11.glEnable(GL11.GL_ALPHA_TEST);
-			this.getMinecraft().getTextureManager().bindTexture(logo);
+			this.getMinecraft().getTextureManager().bind(logo);
 			int[] logoBufW = new int[1];
 			int[] logoBufH = new int[1];
 			glGetTexLevelParameteriv(GL_TEXTURE_2D, 0, GL_TEXTURE_WIDTH, logoBufW);
 			glGetTexLevelParameteriv(GL_TEXTURE_2D, 0, GL_TEXTURE_HEIGHT, logoBufH);
 			int logoTexWidth = logoBufW[0];
 			int logoTexHeight = logoBufH[0];
-			blit((width>>1)-(logoTexWidth>>1), height>>4, 0, 0, logoTexWidth, logoTexHeight, logoTexWidth, logoTexHeight);
+			blit(stack, (width>>1)-(logoTexWidth>>1), height>>4, 0, 0, logoTexWidth, logoTexHeight, logoTexWidth, logoTexHeight);
 			GL11.glDisable(GL11.GL_BLEND);
 			GL11.glDisable(GL11.GL_ALPHA_TEST);
-			GL11.glPopMatrix();
+			stack.popPose();
 		}
 
 		int buttonSize = 32 * Config.ConfigValues.BUTTON_SIZE_MULTIPLIER;
@@ -74,11 +75,11 @@ public class GuiNewMainMenu extends Screen {
 		right =          new GuiLocation(centerX - (buttonSize >> 1) + 2 * buttonDistanceApart, centerY + (height / 6) - 2*(buttonSize / 3));
 
 		if(Config.ConfigValues.BUTTONS.size() >= 1){
-			Utils.addHexaButtonLeft(left.x, left.y, mouseX, mouseY);
-			Utils.addHexaButton(leftcenter.x, leftcenter.y, mouseX, mouseY, (this.currentButton-1+Config.ConfigValues.BUTTONS.size())%Config.ConfigValues.BUTTONS.size());
-			Utils.addHexaButton(center.x, center.y, mouseX, mouseY, (this.currentButton+Config.ConfigValues.BUTTONS.size())%Config.ConfigValues.BUTTONS.size());
-			Utils.addHexaButton(centerright.x, centerright.y, mouseX, mouseY, (this.currentButton+1+Config.ConfigValues.BUTTONS.size())%Config.ConfigValues.BUTTONS.size());
-			Utils.addHexaButtonRight(right.x, right.y, mouseX, mouseY);
+			Utils.addHexaButtonLeft(stack, left.x, left.y, mouseX, mouseY);
+			Utils.addHexaButton(stack, leftcenter.x, leftcenter.y, mouseX, mouseY, (this.currentButton-1+Config.ConfigValues.BUTTONS.size())%Config.ConfigValues.BUTTONS.size());
+			Utils.addHexaButton(stack, center.x, center.y, mouseX, mouseY, (this.currentButton+Config.ConfigValues.BUTTONS.size())%Config.ConfigValues.BUTTONS.size());
+			Utils.addHexaButton(stack, centerright.x, centerright.y, mouseX, mouseY, (this.currentButton+1+Config.ConfigValues.BUTTONS.size())%Config.ConfigValues.BUTTONS.size());
+			Utils.addHexaButtonRight(stack, right.x, right.y, mouseX, mouseY);
 		}
 	}
 	
@@ -87,27 +88,27 @@ public class GuiNewMainMenu extends Screen {
 		int buttonSize = 32 * Config.ConfigValues.BUTTON_SIZE_MULTIPLIER;
 		if (Config.ConfigValues.BUTTONS.size() >= 1){
 			if((left.x + buttonSize) > mouseX && mouseX > left.x && (left.y + buttonSize) > mouseY && mouseY > left.y){
-				Minecraft.getInstance().getSoundHandler().play(SimpleSound.master(SoundEvents.UI_BUTTON_CLICK, 1));
+				Minecraft.getInstance().getSoundManager().play(SimpleSound.forUI(SoundEvents.UI_BUTTON_CLICK, 1));
 				this.currentButton = (this.currentButton-1+Config.ConfigValues.BUTTONS.size())%Config.ConfigValues.BUTTONS.size();
 			}
 
 			if((leftcenter.x + buttonSize) > mouseX && mouseX > leftcenter.x && (leftcenter.y + buttonSize) > mouseY && mouseY > leftcenter.y){
-				Minecraft.getInstance().getSoundHandler().play(SimpleSound.master(SoundEvents.UI_BUTTON_CLICK, 1));
+				Minecraft.getInstance().getSoundManager().play(SimpleSound.forUI(SoundEvents.UI_BUTTON_CLICK, 1));
 				Utils.executeActionForButtonId((this.currentButton+Config.ConfigValues.BUTTONS.size()-1+Config.ConfigValues.BUTTONS.size())%Config.ConfigValues.BUTTONS.size(), this);
 			}
 
 			if((center.x + buttonSize) > mouseX && mouseX > center.x && (center.y + buttonSize) > mouseY && mouseY > center.y){
-				Minecraft.getInstance().getSoundHandler().play(SimpleSound.master(SoundEvents.UI_BUTTON_CLICK, 1));
+				Minecraft.getInstance().getSoundManager().play(SimpleSound.forUI(SoundEvents.UI_BUTTON_CLICK, 1));
 				Utils.executeActionForButtonId((this.currentButton+Config.ConfigValues.BUTTONS.size())%Config.ConfigValues.BUTTONS.size(), this);
 			}
 
 			if((centerright.x + buttonSize) > mouseX && mouseX > centerright.x && (centerright.y + buttonSize) > mouseY && mouseY > centerright.y){
-				Minecraft.getInstance().getSoundHandler().play(SimpleSound.master(SoundEvents.UI_BUTTON_CLICK, 1));
+				Minecraft.getInstance().getSoundManager().play(SimpleSound.forUI(SoundEvents.UI_BUTTON_CLICK, 1));
 				Utils.executeActionForButtonId((this.currentButton+Config.ConfigValues.BUTTONS.size()+1+Config.ConfigValues.BUTTONS.size())%Config.ConfigValues.BUTTONS.size(), this);
 			}
 
 			if((right.x + buttonSize) > mouseX && mouseX > right.x && (right.y + buttonSize) > mouseY && mouseY > right.y){
-				Minecraft.getInstance().getSoundHandler().play(SimpleSound.master(SoundEvents.UI_BUTTON_CLICK, 1));
+				Minecraft.getInstance().getSoundManager().play(SimpleSound.forUI(SoundEvents.UI_BUTTON_CLICK, 1));
 				this.currentButton = (this.currentButton+1+Config.ConfigValues.BUTTONS.size())%Config.ConfigValues.BUTTONS.size();
 			}
 		}

@@ -63,7 +63,7 @@ public class Config {
                             JsonElement valueElement = jsonObject.get("value");
                             JsonElement textureElement = jsonObject.get("texture");
                             if(typeElement.isJsonPrimitive() && typeElement.getAsJsonPrimitive().isString() && valueElement.isJsonPrimitive() && valueElement.getAsJsonPrimitive().isString() && textureElement.isJsonPrimitive() && textureElement.getAsJsonPrimitive().isString()){
-                                ResourceLocation type = ResourceLocation.tryCreate(typeElement.getAsString());
+                                ResourceLocation type = ResourceLocation.tryParse(typeElement.getAsString());
                                 String value = valueElement.getAsString();
                                 String texture = textureElement.getAsString();
                                 ConfigValues.BUTTONS.add(new Triple<>(type, value, texture));

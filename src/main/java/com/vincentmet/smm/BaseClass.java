@@ -9,13 +9,9 @@ import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 
 @Mod(Ref.MODID)
 public class BaseClass{
-    public static BaseClass INSTANCE;
-
     public BaseClass(){
-        INSTANCE = this;
         FMLJavaModLoadingContext.get().getModEventBus().addListener(this::setup);
         MinecraftForge.EVENT_BUS.register(this);
-        MinecraftForge.EVENT_BUS.register(EventHandler.class);
 
     }
 

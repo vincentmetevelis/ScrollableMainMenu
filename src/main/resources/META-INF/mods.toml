@@ -1,9 +1,10 @@
 modLoader="javafml" #mandatory
-loaderVersion="[31,)" #mandatory
+loaderVersion="[36,)" #mandatory
 credits="vincentmet" #optional
+license="All rights reserved"
 [[mods]] #mandatory
 modId="smm" #mandatory
-version="1.15.2-1.0.0" #mandatory
+version="1.16.5-1.0.0" #mandatory
 displayName="Scrollable Main Menu" #mandatory
 description='''
 Wooooooooosssshhh!!!
