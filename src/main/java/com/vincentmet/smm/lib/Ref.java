@@ -1,6 +1,6 @@
 package com.vincentmet.smm.lib;
 
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.fml.loading.FMLPaths;
 
 import java.nio.file.Path;

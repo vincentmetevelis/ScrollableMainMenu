@@ -2,7 +2,7 @@ package com.vincentmet.smm;
 
 import com.google.gson.*;
 import com.vincentmet.smm.lib.Triple;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.fml.common.Mod;
 
 import java.io.IOException;

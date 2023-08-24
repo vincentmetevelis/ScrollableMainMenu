@@ -1,69 +1,59 @@
 package com.vincentmet.smm.lib;
 
-import com.mojang.blaze3d.matrix.MatrixStack;
-import com.mojang.blaze3d.platform.GlStateManager;
+import com.mojang.blaze3d.systems.RenderSystem;
+import com.mojang.blaze3d.vertex.PoseStack;
 import com.vincentmet.smm.Config;
-import com.vincentmet.smm.guis.GuiNewMainMenu;
+import net.minecraft.Util;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.AbstractGui;
-import net.minecraft.client.gui.screen.*;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.Util;
-import net.minecraftforge.fml.client.gui.screen.ModListScreen;
-import org.lwjgl.opengl.GL11;
+import net.minecraft.client.gui.screens.ConfirmLinkScreen;
+import net.minecraft.client.gui.screens.LanguageSelectScreen;
+import net.minecraft.client.gui.screens.OptionsScreen;
+import net.minecraft.client.gui.screens.Screen;
+import net.minecraft.client.gui.screens.multiplayer.JoinMultiplayerScreen;
+import net.minecraft.client.gui.screens.worldselection.SelectWorldScreen;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraftforge.fmlclient.gui.screen.ModListScreen;
 
 public class Utils{
-	public static <T extends GuiNewMainMenu> void addHexaButton(MatrixStack stack, int x, int y, int mouseX, int mouseY, int buttonId){
+	public static void addHexaButton(PoseStack stack, int x, int y, int mouseX, int mouseY, int buttonId){
 		int buttonSize = 32 * Config.ConfigValues.BUTTON_SIZE_MULTIPLIER;
 		stack.pushPose();
-		GL11.glEnable(GL11.GL_BLEND);
-		GL11.glEnable(GL11.GL_ALPHA_TEST);
 		if((x + buttonSize) > mouseX && mouseX > x && (y + buttonSize) > mouseY && mouseY > y){
-			Minecraft.getInstance().getTextureManager().bind(Ref.IMAGE_BUTTON_HEXAGON_PRESSED);
+			RenderSystem.setShaderTexture(0, Ref.IMAGE_BUTTON_HEXAGON_PRESSED);
 		}else{
-			Minecraft.getInstance().getTextureManager().bind(Ref.IMAGE_BUTTON_HEXAGON_UNPRESSED);
+			RenderSystem.setShaderTexture(0, Ref.IMAGE_BUTTON_HEXAGON_UNPRESSED);
 		}
-		AbstractGui.blit(stack, x, y, 0, 0, buttonSize, buttonSize, buttonSize, buttonSize);
-		Minecraft.getInstance().getTextureManager().bind(new ResourceLocation(Ref.MODID, Config.ConfigValues.BUTTONS.get(buttonId % Config.ConfigValues.BUTTONS.size()).getRight()));
-		AbstractGui.blit(stack, x + (buttonSize / 4), y + (buttonSize / 4), 0, 0, (buttonSize / 2), (buttonSize / 2), (buttonSize / 2), (buttonSize / 2));
-		GL11.glDisable(GL11.GL_BLEND);
-		GL11.glDisable(GL11.GL_ALPHA_TEST);
+		Screen.blit(stack, x, y, 0, 0, buttonSize, buttonSize, buttonSize, buttonSize);
+		RenderSystem.setShaderTexture(0, new ResourceLocation(Ref.MODID, Config.ConfigValues.BUTTONS.get(buttonId % Config.ConfigValues.BUTTONS.size()).getRight()));
+		Screen.blit(stack, x + (buttonSize / 4), y + (buttonSize / 4), 0, 0, (buttonSize / 2), (buttonSize / 2), (buttonSize / 2), (buttonSize / 2));
 		stack.popPose();
 	}
 
-	public static <T extends GuiNewMainMenu> void addHexaButtonLeft(MatrixStack stack, int x, int y, int mouseX, int mouseY){
+	public static void addHexaButtonLeft(PoseStack stack, int x, int y, int mouseX, int mouseY){
 		int buttonSize = 32 * Config.ConfigValues.BUTTON_SIZE_MULTIPLIER;
 		stack.pushPose();
-		GL11.glEnable(GL11.GL_BLEND);
-		GL11.glEnable(GL11.GL_ALPHA_TEST);
 		if((x + buttonSize) > mouseX && mouseX > x && (y + buttonSize) > mouseY && mouseY > y){
-			Minecraft.getInstance().getTextureManager().bind(Ref.IMAGE_BUTTON_HEXAGON_PRESSED);
+			RenderSystem.setShaderTexture(0, Ref.IMAGE_BUTTON_HEXAGON_PRESSED);
 		}else{
-			Minecraft.getInstance().getTextureManager().bind(Ref.IMAGE_BUTTON_HEXAGON_UNPRESSED);
+			RenderSystem.setShaderTexture(0, Ref.IMAGE_BUTTON_HEXAGON_UNPRESSED);
 		}
-		AbstractGui.blit(stack, x, y, 0, 0, buttonSize, buttonSize, buttonSize, buttonSize);
-		Minecraft.getInstance().getTextureManager().bind(Ref.IMAGE_BUTTON_ICON_ARROW_LEFT);
-		AbstractGui.blit(stack, x + (buttonSize / 4), y + (buttonSize / 4), 0, 0, (buttonSize / 2), (buttonSize / 2), (buttonSize / 2), (buttonSize / 2));
-		GL11.glDisable(GL11.GL_BLEND);
-		GL11.glDisable(GL11.GL_ALPHA_TEST);
+		Screen.blit(stack, x, y, 0, 0, buttonSize, buttonSize, buttonSize, buttonSize);
+		RenderSystem.setShaderTexture(0, Ref.IMAGE_BUTTON_ICON_ARROW_LEFT);
+		Screen.blit(stack, x + (buttonSize / 4), y + (buttonSize / 4), 0, 0, (buttonSize / 2), (buttonSize / 2), (buttonSize / 2), (buttonSize / 2));
 		stack.popPose();
 	}
 
-	public static <T extends GuiNewMainMenu> void addHexaButtonRight(MatrixStack stack, int x, int y, int mouseX, int mouseY){
+	public static void addHexaButtonRight(PoseStack stack, int x, int y, int mouseX, int mouseY){
 		int buttonSize = 32 * Config.ConfigValues.BUTTON_SIZE_MULTIPLIER;
 		stack.pushPose();
-		GL11.glEnable(GL11.GL_BLEND);
-		GL11.glEnable(GL11.GL_ALPHA_TEST);
 		if((x + buttonSize) > mouseX && mouseX > x && (y + buttonSize) > mouseY && mouseY > y){
-			Minecraft.getInstance().getTextureManager().bind(Ref.IMAGE_BUTTON_HEXAGON_PRESSED);
+			RenderSystem.setShaderTexture(0, Ref.IMAGE_BUTTON_HEXAGON_PRESSED);
 		}else{
-			Minecraft.getInstance().getTextureManager().bind(Ref.IMAGE_BUTTON_HEXAGON_UNPRESSED);
+			RenderSystem.setShaderTexture(0, Ref.IMAGE_BUTTON_HEXAGON_UNPRESSED);
 		}
-		AbstractGui.blit(stack, x, y, 0, 0, buttonSize, buttonSize, buttonSize, buttonSize);
-		Minecraft.getInstance().getTextureManager().bind(Ref.IMAGE_BUTTON_ICON_ARROW_RIGHT);
-		AbstractGui.blit(stack, x + (buttonSize / 4), y + (buttonSize / 4), 0, 0, (buttonSize / 2), (buttonSize / 2), (buttonSize / 2), (buttonSize / 2));
-		GL11.glDisable(GL11.GL_BLEND);
-		GL11.glDisable(GL11.GL_ALPHA_TEST);
+		Screen.blit(stack, x, y, 0, 0, buttonSize, buttonSize, buttonSize, buttonSize);
+		RenderSystem.setShaderTexture(0, Ref.IMAGE_BUTTON_ICON_ARROW_RIGHT);
+		Screen.blit(stack, x + (buttonSize / 4), y + (buttonSize / 4), 0, 0, (buttonSize / 2), (buttonSize / 2), (buttonSize / 2), (buttonSize / 2));
 		stack.popPose();
 	}
 
@@ -71,17 +61,17 @@ public class Utils{
 		ResourceLocation type = Config.ConfigValues.BUTTONS.get(buttonId).getLeft();
 		String value = Config.ConfigValues.BUTTONS.get(buttonId).getMiddle();
 		if(type.equals(new ResourceLocation(Ref.MODID, "minecraft"))){
-			if(value.equals("singleplayer")) Minecraft.getInstance().setScreen(new WorldSelectionScreen(prevScreen));
-			if(value.equals("multiplayer")) Minecraft.getInstance().setScreen(new MultiplayerScreen(prevScreen));
+			if(value.equals("singleplayer")) Minecraft.getInstance().setScreen(new SelectWorldScreen(prevScreen));
+			if(value.equals("multiplayer")) Minecraft.getInstance().setScreen(new JoinMultiplayerScreen(prevScreen));
 			if(value.equals("settings")) Minecraft.getInstance().setScreen(new OptionsScreen(prevScreen, Minecraft.getInstance().options));
-			if(value.equals("localization")) Minecraft.getInstance().setScreen(new LanguageScreen(prevScreen, Minecraft.getInstance().options, Minecraft.getInstance().getLanguageManager()));
+			if(value.equals("localization")) Minecraft.getInstance().setScreen(new LanguageSelectScreen(prevScreen, Minecraft.getInstance().options, Minecraft.getInstance().getLanguageManager()));
 			if(value.equals("quitgame")) Minecraft.getInstance().stop();
 		}
 		if(type.equals(new ResourceLocation(Ref.MODID, "forge"))){
 			if(value.equals("modlist")) Minecraft.getInstance().setScreen(new ModListScreen(prevScreen));
 		}
 		if(type.equals(new ResourceLocation(Ref.MODID, "url"))){
-			Minecraft.getInstance().setScreen(new ConfirmOpenLinkScreen((bool) -> {
+			Minecraft.getInstance().setScreen(new ConfirmLinkScreen((bool) -> {
 				if (bool) {
 					Util.getPlatform().openUri(Config.ConfigValues.BUTTONS.get(buttonId).getMiddle());
 				}

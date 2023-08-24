@@ -1,17 +1,18 @@
 package com.vincentmet.smm.guis;
 
-import com.mojang.blaze3d.matrix.MatrixStack;
+import com.mojang.blaze3d.platform.GlStateManager;
+import com.mojang.blaze3d.systems.RenderSystem;
+import com.mojang.blaze3d.vertex.PoseStack;
 import com.vincentmet.smm.Config;
 import com.vincentmet.smm.lib.Ref;
 import com.vincentmet.smm.lib.Utils;
 import com.vincentmet.smm.lib.gui.GuiLocation;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.audio.SimpleSound;
-import net.minecraft.client.gui.screen.Screen;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.SoundEvents;
-import net.minecraft.util.text.TranslationTextComponent;
-import org.lwjgl.opengl.GL11;
+import net.minecraft.client.gui.screens.Screen;
+import net.minecraft.client.resources.sounds.SimpleSoundInstance;
+import net.minecraft.network.chat.TextComponent;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.sounds.SoundEvents;
 
 import static org.lwjgl.opengl.GL11.*;
 
@@ -27,39 +28,24 @@ public class GuiNewMainMenu extends Screen {
 	public GuiLocation right;
 
 	public GuiNewMainMenu() {
-		super(new TranslationTextComponent(""));
+		super(new TextComponent(""));
 	}
 
 	@Override
-	public void render(MatrixStack stack, int mouseX, int mouseY, float partialTicks){
+	public void render(PoseStack stack, int mouseX, int mouseY, float partialTicks){
 		stack.pushPose();
-		this.getMinecraft().getTextureManager().bind(background);
-		int[] bgBufW = new int[1];
-		int[] bgBufH = new int[1];
-		glGetTexLevelParameteriv(GL_TEXTURE_2D, 0, GL_TEXTURE_WIDTH, bgBufW);
-		glGetTexLevelParameteriv(GL_TEXTURE_2D, 0, GL_TEXTURE_HEIGHT, bgBufH);
-		int bgWidth = bgBufW[0];
-		int bgHeight = bgBufH[0];
-		float x = (float)width/bgWidth;
-		float y = (float)height/bgHeight;
+		RenderSystem.setShaderTexture(0, background);
+		float x = (float)width/1280;
+		float y = (float)height/720;
 		stack.scale(x, y, 1.0f);
-		blit(stack, 0, 0, 0, 0, bgWidth, bgHeight, bgWidth, bgHeight);
+		Screen.blit(stack, 0, 0, 0, 0, 1280, 720, 1280, 720);
 		stack.popPose();
 		
 		if(Config.ConfigValues.IS_LOGO_ENABLED){
 			stack.pushPose();
-			GL11.glEnable(GL11.GL_BLEND);
-			GL11.glEnable(GL11.GL_ALPHA_TEST);
-			this.getMinecraft().getTextureManager().bind(logo);
-			int[] logoBufW = new int[1];
-			int[] logoBufH = new int[1];
-			glGetTexLevelParameteriv(GL_TEXTURE_2D, 0, GL_TEXTURE_WIDTH, logoBufW);
-			glGetTexLevelParameteriv(GL_TEXTURE_2D, 0, GL_TEXTURE_HEIGHT, logoBufH);
-			int logoTexWidth = logoBufW[0];
-			int logoTexHeight = logoBufH[0];
-			blit(stack, (width>>1)-(logoTexWidth>>1), height>>4, 0, 0, logoTexWidth, logoTexHeight, logoTexWidth, logoTexHeight);
-			GL11.glDisable(GL11.GL_BLEND);
-			GL11.glDisable(GL11.GL_ALPHA_TEST);
+			RenderSystem.setShaderTexture(0, logo);
+			Screen.blit(stack, (width>>1)-(200>>1), height>>4, 0, 0, 200, 150, 200, 150);
+			RenderSystem.disableBlend();
 			stack.popPose();
 		}
 
@@ -88,27 +74,27 @@ public class GuiNewMainMenu extends Screen {
 		int buttonSize = 32 * Config.ConfigValues.BUTTON_SIZE_MULTIPLIER;
 		if (Config.ConfigValues.BUTTONS.size() >= 1){
 			if((left.x + buttonSize) > mouseX && mouseX > left.x && (left.y + buttonSize) > mouseY && mouseY > left.y){
-				Minecraft.getInstance().getSoundManager().play(SimpleSound.forUI(SoundEvents.UI_BUTTON_CLICK, 1));
+				Minecraft.getInstance().getSoundManager().play(SimpleSoundInstance.forUI(SoundEvents.UI_BUTTON_CLICK, 1));
 				this.currentButton = (this.currentButton-1+Config.ConfigValues.BUTTONS.size())%Config.ConfigValues.BUTTONS.size();
 			}
 
 			if((leftcenter.x + buttonSize) > mouseX && mouseX > leftcenter.x && (leftcenter.y + buttonSize) > mouseY && mouseY > leftcenter.y){
-				Minecraft.getInstance().getSoundManager().play(SimpleSound.forUI(SoundEvents.UI_BUTTON_CLICK, 1));
+				Minecraft.getInstance().getSoundManager().play(SimpleSoundInstance.forUI(SoundEvents.UI_BUTTON_CLICK, 1));
 				Utils.executeActionForButtonId((this.currentButton+Config.ConfigValues.BUTTONS.size()-1+Config.ConfigValues.BUTTONS.size())%Config.ConfigValues.BUTTONS.size(), this);
 			}
 
 			if((center.x + buttonSize) > mouseX && mouseX > center.x && (center.y + buttonSize) > mouseY && mouseY > center.y){
-				Minecraft.getInstance().getSoundManager().play(SimpleSound.forUI(SoundEvents.UI_BUTTON_CLICK, 1));
+				Minecraft.getInstance().getSoundManager().play(SimpleSoundInstance.forUI(SoundEvents.UI_BUTTON_CLICK, 1));
 				Utils.executeActionForButtonId((this.currentButton+Config.ConfigValues.BUTTONS.size())%Config.ConfigValues.BUTTONS.size(), this);
 			}
 
 			if((centerright.x + buttonSize) > mouseX && mouseX > centerright.x && (centerright.y + buttonSize) > mouseY && mouseY > centerright.y){
-				Minecraft.getInstance().getSoundManager().play(SimpleSound.forUI(SoundEvents.UI_BUTTON_CLICK, 1));
+				Minecraft.getInstance().getSoundManager().play(SimpleSoundInstance.forUI(SoundEvents.UI_BUTTON_CLICK, 1));
 				Utils.executeActionForButtonId((this.currentButton+Config.ConfigValues.BUTTONS.size()+1+Config.ConfigValues.BUTTONS.size())%Config.ConfigValues.BUTTONS.size(), this);
 			}
 
 			if((right.x + buttonSize) > mouseX && mouseX > right.x && (right.y + buttonSize) > mouseY && mouseY > right.y){
-				Minecraft.getInstance().getSoundManager().play(SimpleSound.forUI(SoundEvents.UI_BUTTON_CLICK, 1));
+				Minecraft.getInstance().getSoundManager().play(SimpleSoundInstance.forUI(SoundEvents.UI_BUTTON_CLICK, 1));
 				this.currentButton = (this.currentButton+1+Config.ConfigValues.BUTTONS.size())%Config.ConfigValues.BUTTONS.size();
 			}
 		}
