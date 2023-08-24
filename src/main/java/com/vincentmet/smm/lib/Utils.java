@@ -12,7 +12,7 @@ import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.gui.screens.multiplayer.JoinMultiplayerScreen;
 import net.minecraft.client.gui.screens.worldselection.SelectWorldScreen;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraftforge.fmlclient.gui.screen.ModListScreen;
+import net.minecraftforge.client.gui.ModListScreen;
 
 public class Utils{
 	public static void addHexaButton(PoseStack stack, int x, int y, int mouseX, int mouseY, int buttonId){
