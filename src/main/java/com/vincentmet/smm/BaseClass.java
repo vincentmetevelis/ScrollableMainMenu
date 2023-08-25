@@ -4,6 +4,7 @@ import com.vincentmet.smm.lib.Ref;
 import com.vincentmet.smm.lib.handlers.EventHandler;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 
@@ -15,7 +16,7 @@ public class BaseClass{
 
     }
 
-    private void setup(final FMLCommonSetupEvent event){
+    private void setup(final FMLClientSetupEvent event){
         Config.readConfigToMemory(Ref.PATH_CONFIG, "config.json");
     }
 }

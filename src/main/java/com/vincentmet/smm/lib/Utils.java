@@ -61,7 +61,9 @@ public class Utils{
 		ResourceLocation type = Config.ConfigValues.BUTTONS.get(buttonId).getLeft();
 		String value = Config.ConfigValues.BUTTONS.get(buttonId).getMiddle();
 		if(type.equals(new ResourceLocation(Ref.MODID, "minecraft"))){
-			if(value.equals("singleplayer")) Minecraft.getInstance().setScreen(new SelectWorldScreen(prevScreen));
+			SelectWorldScreen s = new SelectWorldScreen(prevScreen);
+			s.init(Minecraft.getInstance(), prevScreen.width, prevScreen.height);
+			if(value.equals("singleplayer")) Minecraft.getInstance().setScreen(s);
 			if(value.equals("multiplayer")) Minecraft.getInstance().setScreen(new JoinMultiplayerScreen(prevScreen));
 			if(value.equals("settings")) Minecraft.getInstance().setScreen(new OptionsScreen(prevScreen, Minecraft.getInstance().options));
 			if(value.equals("localization")) Minecraft.getInstance().setScreen(new LanguageSelectScreen(prevScreen, Minecraft.getInstance().options, Minecraft.getInstance().getLanguageManager()));

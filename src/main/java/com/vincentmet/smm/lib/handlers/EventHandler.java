@@ -2,6 +2,7 @@ package com.vincentmet.smm.lib.handlers;
 
 import com.vincentmet.smm.guis.GuiNewMainMenu;
 import com.vincentmet.smm.lib.Ref;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screens.TitleScreen;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.ScreenEvent;
@@ -13,7 +14,7 @@ public class EventHandler {
 	@SubscribeEvent
 	public static void reregisterMainMenuGui(ScreenEvent e) {
 		if(e.getScreen() instanceof TitleScreen){
-			e.getScreen().getMinecraft().setScreen(new GuiNewMainMenu());
+			Minecraft.getInstance().screen = new GuiNewMainMenu();
 		}
 	}
 }

@@ -1,6 +1,5 @@
 package com.vincentmet.smm.guis;
 
-import com.mojang.blaze3d.platform.GlStateManager;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.vincentmet.smm.Config;
@@ -10,11 +9,9 @@ import com.vincentmet.smm.lib.gui.GuiLocation;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.resources.sounds.SimpleSoundInstance;
-import net.minecraft.network.chat.TextComponent;
+import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvents;
-
-import static org.lwjgl.opengl.GL11.*;
 
 public class GuiNewMainMenu extends Screen {
 	private static final ResourceLocation background = new ResourceLocation(Ref.MODID, "textures/gui/background.png");
@@ -28,7 +25,7 @@ public class GuiNewMainMenu extends Screen {
 	public GuiLocation right;
 
 	public GuiNewMainMenu() {
-		super(new TextComponent(""));
+		super(Component.literal("Main Menu"));
 	}
 
 	@Override
