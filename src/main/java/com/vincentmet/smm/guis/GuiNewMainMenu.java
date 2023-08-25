@@ -7,6 +7,7 @@ import com.vincentmet.smm.lib.Ref;
 import com.vincentmet.smm.lib.Utils;
 import com.vincentmet.smm.lib.gui.GuiLocation;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.resources.sounds.SimpleSoundInstance;
 import net.minecraft.network.chat.Component;
@@ -29,21 +30,19 @@ public class GuiNewMainMenu extends Screen {
 	}
 
 	@Override
-	public void render(PoseStack stack, int mouseX, int mouseY, float partialTicks){
-		stack.pushPose();
-		RenderSystem.setShaderTexture(0, background);
+	public void render(GuiGraphics stack, int mouseX, int mouseY, float partialTicks){
+		stack.pose().pushPose();
 		float x = (float)width/1280;
 		float y = (float)height/720;
-		stack.scale(x, y, 1.0f);
-		Screen.blit(stack, 0, 0, 0, 0, 1280, 720, 1280, 720);
-		stack.popPose();
+		stack.pose().scale(x, y, 1.0f);
+		stack.blit(background, 0, 0, 0, 0, 1280, 720, 1280, 720);
+		stack.pose().popPose();
 		
 		if(Config.ConfigValues.IS_LOGO_ENABLED){
-			stack.pushPose();
-			RenderSystem.setShaderTexture(0, logo);
-			Screen.blit(stack, (width>>1)-(200>>1), height>>4, 0, 0, 200, 150, 200, 150);
+			stack.pose().pushPose();
+			stack.blit(logo, (width>>1)-(200>>1), height>>4, 0, 0, 200, 150, 200, 150);
 			RenderSystem.disableBlend();
-			stack.popPose();
+			stack.pose().popPose();
 		}
 
 		int buttonSize = 32 * Config.ConfigValues.BUTTON_SIZE_MULTIPLIER;

@@ -5,6 +5,7 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.vincentmet.smm.Config;
 import net.minecraft.Util;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.ConfirmLinkScreen;
 import net.minecraft.client.gui.screens.LanguageSelectScreen;
 import net.minecraft.client.gui.screens.OptionsScreen;
@@ -15,46 +16,40 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.client.gui.ModListScreen;
 
 public class Utils{
-	public static void addHexaButton(PoseStack stack, int x, int y, int mouseX, int mouseY, int buttonId){
+	public static void addHexaButton(GuiGraphics stack, int x, int y, int mouseX, int mouseY, int buttonId){
 		int buttonSize = 32 * Config.ConfigValues.BUTTON_SIZE_MULTIPLIER;
-		stack.pushPose();
+		stack.pose().pushPose();
 		if((x + buttonSize) > mouseX && mouseX > x && (y + buttonSize) > mouseY && mouseY > y){
-			RenderSystem.setShaderTexture(0, Ref.IMAGE_BUTTON_HEXAGON_PRESSED);
+			stack.blit(Ref.IMAGE_BUTTON_HEXAGON_PRESSED, x, y, 0, 0, buttonSize, buttonSize, buttonSize, buttonSize);
 		}else{
-			RenderSystem.setShaderTexture(0, Ref.IMAGE_BUTTON_HEXAGON_UNPRESSED);
+			stack.blit(Ref.IMAGE_BUTTON_HEXAGON_UNPRESSED, x, y, 0, 0, buttonSize, buttonSize, buttonSize, buttonSize);
 		}
-		Screen.blit(stack, x, y, 0, 0, buttonSize, buttonSize, buttonSize, buttonSize);
-		RenderSystem.setShaderTexture(0, new ResourceLocation(Ref.MODID, Config.ConfigValues.BUTTONS.get(buttonId % Config.ConfigValues.BUTTONS.size()).getRight()));
-		Screen.blit(stack, x + (buttonSize / 4), y + (buttonSize / 4), 0, 0, (buttonSize / 2), (buttonSize / 2), (buttonSize / 2), (buttonSize / 2));
-		stack.popPose();
+		stack.blit(new ResourceLocation(Ref.MODID, Config.ConfigValues.BUTTONS.get(buttonId % Config.ConfigValues.BUTTONS.size()).getRight()), x + (buttonSize / 4), y + (buttonSize / 4), 0, 0, (buttonSize / 2), (buttonSize / 2), (buttonSize / 2), (buttonSize / 2));
+		stack.pose().popPose();
 	}
 
-	public static void addHexaButtonLeft(PoseStack stack, int x, int y, int mouseX, int mouseY){
+	public static void addHexaButtonLeft(GuiGraphics stack, int x, int y, int mouseX, int mouseY){
 		int buttonSize = 32 * Config.ConfigValues.BUTTON_SIZE_MULTIPLIER;
-		stack.pushPose();
+		stack.pose().pushPose();
 		if((x + buttonSize) > mouseX && mouseX > x && (y + buttonSize) > mouseY && mouseY > y){
-			RenderSystem.setShaderTexture(0, Ref.IMAGE_BUTTON_HEXAGON_PRESSED);
+			stack.blit(Ref.IMAGE_BUTTON_HEXAGON_PRESSED, x, y, 0, 0, buttonSize, buttonSize, buttonSize, buttonSize);
 		}else{
-			RenderSystem.setShaderTexture(0, Ref.IMAGE_BUTTON_HEXAGON_UNPRESSED);
+			stack.blit(Ref.IMAGE_BUTTON_HEXAGON_UNPRESSED, x, y, 0, 0, buttonSize, buttonSize, buttonSize, buttonSize);
 		}
-		Screen.blit(stack, x, y, 0, 0, buttonSize, buttonSize, buttonSize, buttonSize);
-		RenderSystem.setShaderTexture(0, Ref.IMAGE_BUTTON_ICON_ARROW_LEFT);
-		Screen.blit(stack, x + (buttonSize / 4), y + (buttonSize / 4), 0, 0, (buttonSize / 2), (buttonSize / 2), (buttonSize / 2), (buttonSize / 2));
-		stack.popPose();
+		stack.blit(Ref.IMAGE_BUTTON_ICON_ARROW_LEFT, x + (buttonSize / 4), y + (buttonSize / 4), 0, 0, (buttonSize / 2), (buttonSize / 2), (buttonSize / 2), (buttonSize / 2));
+		stack.pose().popPose();
 	}
 
-	public static void addHexaButtonRight(PoseStack stack, int x, int y, int mouseX, int mouseY){
+	public static void addHexaButtonRight(GuiGraphics stack, int x, int y, int mouseX, int mouseY){
 		int buttonSize = 32 * Config.ConfigValues.BUTTON_SIZE_MULTIPLIER;
-		stack.pushPose();
+		stack.pose().pushPose();
 		if((x + buttonSize) > mouseX && mouseX > x && (y + buttonSize) > mouseY && mouseY > y){
-			RenderSystem.setShaderTexture(0, Ref.IMAGE_BUTTON_HEXAGON_PRESSED);
+			stack.blit(Ref.IMAGE_BUTTON_HEXAGON_PRESSED, x, y, 0, 0, buttonSize, buttonSize, buttonSize, buttonSize);
 		}else{
-			RenderSystem.setShaderTexture(0, Ref.IMAGE_BUTTON_HEXAGON_UNPRESSED);
+			stack.blit(Ref.IMAGE_BUTTON_HEXAGON_UNPRESSED, x, y, 0, 0, buttonSize, buttonSize, buttonSize, buttonSize);
 		}
-		Screen.blit(stack, x, y, 0, 0, buttonSize, buttonSize, buttonSize, buttonSize);
-		RenderSystem.setShaderTexture(0, Ref.IMAGE_BUTTON_ICON_ARROW_RIGHT);
-		Screen.blit(stack, x + (buttonSize / 4), y + (buttonSize / 4), 0, 0, (buttonSize / 2), (buttonSize / 2), (buttonSize / 2), (buttonSize / 2));
-		stack.popPose();
+		stack.blit(Ref.IMAGE_BUTTON_ICON_ARROW_RIGHT, x + (buttonSize / 4), y + (buttonSize / 4), 0, 0, (buttonSize / 2), (buttonSize / 2), (buttonSize / 2), (buttonSize / 2));
+		stack.pose().popPose();
 	}
 
 	public static void executeActionForButtonId(int buttonId, Screen prevScreen){
